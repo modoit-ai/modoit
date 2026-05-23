@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>수강생 후기 | 모두잇미래교육진흥협회 MFEPA</title>
+  <meta name="description" content="모두잇미래교육진흥협회 수강생들의 생생한 후기를 확인하세요. AI 비즈니스, 스마트폰 활용, 미리캔버스 지도자 과정 수료생의 실제 변화 이야기.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.modoit.co.kr/reviews.html">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="apple-touch-icon" href="images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css?v=20260511">
+  <style>
+    /* === REVIEWS PAGE === */
+    .reviews-hero {
+      background: linear-gradient(135deg, #0C0A1D 0%, #1a1145 60%, #0C0A1D 100%);
+      padding: 120px 0 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .reviews-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .reviews-hero .breadcrumb {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--gray-400);
+      margin-bottom: 20px;
+    }
+    .reviews-hero .breadcrumb a { color: var(--purple-light); transition: color 0.2s; }
+    .reviews-hero .breadcrumb a:hover { color: var(--white); }
+    .reviews-hero .breadcrumb i { font-size: 0.65rem; color: var(--gray-600); }
+    .reviews-hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(124, 58, 237, 0.2);
+      border: 1px solid rgba(124, 58, 237, 0.4);
+      color: var(--purple-light);
+      padding: 5px 14px;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .reviews-hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .reviews-hero p {
+      font-size: 1rem;
+      color: var(--gray-400);
+    }
+
+    /* Stats Bar */
+    .reviews-stats-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 20px 0;
+    }
+    .reviews-stats-inner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .reviews-stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 40px;
+      position: relative;
+    }
+    .reviews-stat-item + .reviews-stat-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10%;
+      height: 80%;
+      width: 1px;
+      background: var(--gray-200);
+    }
+    .reviews-stat-item .stat-num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: var(--gradient-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+    .reviews-stat-item .stat-label {
+      font-size: 0.75rem;
+      color: var(--gray-400);
+      margin-top: 2px;
+    }
+    .reviews-stat-stars {
+      display: flex;
+      gap: 2px;
+      justify-content: center;
+      margin-bottom: 2px;
+    }
+    .reviews-stat-stars i { color: #FBBF24; font-size: 0.9rem; }
+
+    /* Filter Tabs */
+    .reviews-filter {
+      background: var(--white);
+      padding: 24px 0 0;
+      position: sticky;
+      top: 64px;
+      z-index: 100;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .reviews-filter-inner {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gray-500);
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+    .filter-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 16px;
+      border-radius: 50px;
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      color: var(--gray-500);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s;
+      white-space: nowrap;
+      margin-bottom: 12px;
+    }
+    .filter-tab:hover {
+      border-color: var(--purple-lighter);
+      color: var(--purple);
+      background: var(--purple-subtle);
+    }
+    .filter-tab.active {
+      background: var(--gradient-main);
+      color: var(--white);
+      border-color: transparent;
+      box-shadow: 0 2px 12px rgba(124, 58, 237, 0.3);
+    }
+    .filter-tab .count {
+      background: rgba(255,255,255,0.25);
+      border-radius: 50px;
+      padding: 1px 6px;
+      font-size: 0.7rem;
+    }
+    .filter-tab:not(.active) .count {
+      background: var(--gray-100);
+      color: var(--gray-500);
+    }
+
+    /* Reviews Grid */
+    .reviews-section {
+      background: var(--gray-50);
+      padding: 48px 0 80px;
+      min-height: 60vh;
+    }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .review-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200);
+      padding: 28px;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .review-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--gradient-main);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .review-card:hover {
+      border-color: var(--purple-lighter);
+      box-shadow: var(--shadow-card-hover);
+      transform: translateY(-4px);
+    }
+    .review-card:hover::before { opacity: 1; }
+    .review-card.hidden { display: none; }
+    .review-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .review-stars { display: flex; gap: 2px; }
+    .review-stars i { color: #FBBF24; font-size: 0.82rem; }
+    .review-category {
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 50px;
+      background: var(--purple-subtle);
+      color: var(--purple);
+      white-space: nowrap;
+    }
+    .review-quote-icon {
+      font-size: 1.4rem;
+      color: var(--purple-lighter);
+      opacity: 0.5;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .review-body {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+      line-height: 1.75;
+      flex: 1;
+      margin-bottom: 20px;
+    }
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--gray-100);
+    }
+    .review-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--gradient-main);
+      color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .review-author-name { font-size: 0.85rem; font-weight: 700; color: var(--dark); display: block; }
+    .review-author-course { font-size: 0.72rem; color: var(--gray-500); display: block; margin-top: 1px; }
+    .review-date { font-size: 0.68rem; color: var(--gray-400); margin-left: auto; }
+
+    /* Empty State */
+    .reviews-empty {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--gray-400);
+      grid-column: 1/-1;
+    }
+    .reviews-empty i { font-size: 2.5rem; margin-bottom: 12px; color: var(--gray-300); }
+
+    /* CTA */
+    .reviews-cta-section {
+      background: linear-gradient(135deg, #0C0A1D, #1a1145);
+      padding: 60px 0;
+      text-align: center;
+    }
+    .reviews-cta-section h2 { font-size: 1.6rem; font-weight: 800; color: var(--white); margin-bottom: 8px; }
+    .reviews-cta-section p { color: var(--gray-400); margin-bottom: 28px; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .reviews-hero { padding: 100px 0 44px; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .reviews-stat-item { padding: 0 20px; }
+      .reviews-stat-item .stat-num { font-size: 1.3rem; }
+      .reviews-filter { top: 56px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <img src="images/logo.png" alt="MFEPA 로고">
+        <span class="nav-brand">MFEPA</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#about">협회소개</a></li>
+        <li><a href="/#programs">프로그램</a></li>
+        <li><a href="/#instructors">강사진</a></li>
+        <li><a href="/#stats">성과</a></li>
+        <li><a href="/#partners">협력기관</a></li>
+        <li><a href="https://blog.naver.com/sujung_world" target="_blank" rel="noopener">출강기록</a></li>
+        <li><a href="https://www.ceojhn.com/news/articleList.html?sc_area=A&view_type=sm&sc_word=%EB%B0%95%EC%98%A5%EA%B2%BD" target="_blank" rel="noopener">AI칼럼</a></li>
+        <li><a href="https://www.youtube.com/@sujung_world" target="_blank" rel="noopener" class="nav-youtube"><i class="fab fa-youtube"></i> 유튜브</a></li>
+        <li><a href="reviews.html" class="active">후기</a></li>
+        <li><a href="class.html" class="nav-class"><i class="fas fa-play-circle"></i> 온라인 클래스</a></li>
+        <li><a href="/#contact" class="nav-cta">문의하기</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="reviews-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="breadcrumb">
+        <a href="/">홈</a>
+        <i class="fas fa-chevron-right"></i>
+        <span>수강생 후기</span>
+      </nav>
+      <div class="reviews-hero-chip">
+        <i class="fas fa-quote-left"></i> Reviews
+      </div>
+      <h1>수강생 <span class="gradient-text-light">후기</span></h1>
+      <p>교육 현장에서 전해지는 변화의 목소리</p>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <div class="reviews-stats-bar">
+    <div class="container">
+      <div class="reviews-stats-inner">
+        <div class="reviews-stat-item">
+          <span class="stat-num">3,000+</span>
+          <span class="stat-label">누적 수강생</span>
+        </div>
+        <div class="reviews-stat-item">
+          <div class="reviews-stat-stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+          </div>
+          <span class="stat-label">평균 4.9 / 5.0</span>
+        </div>
+        <div class="reviews-stat-item">
+          <span class="stat-num">98.5%</span>
+          <span class="stat-label">수강생 만족도</span>
+        </div>
+        <div class="reviews-stat-item">
+          <span class="stat-num">75+</span>
+          <span class="stat-label">출강 기관 수</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="reviews-filter" id="reviewsFilter">
+    <div class="container">
+      <div class="reviews-filter-inner">
+        <span class="filter-label"><i class="fas fa-filter"></i> 과정별</span>
+        <button class="filter-tab active" data-filter="all">
+          전체 <span class="count" id="cnt-all">18</span>
+        </button>
+        <button class="filter-tab" data-filter="ai-biz">
+          AI 비즈니스 <span class="count" id="cnt-ai-biz">5</span>
+        </button>
+        <button class="filter-tab" data-filter="smartphone">
+          AI 스마트폰 <span class="count" id="cnt-smartphone">4</span>
+        </button>
+        <button class="filter-tab" data-filter="miricanvas">
+          미리캔버스 <span class="count" id="cnt-miricanvas">4</span>
+        </button>
+        <button class="filter-tab" data-filter="senior">
+          시니어 AI <span class="count" id="cnt-senior">5</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Grid -->
+  <section class="reviews-section">
+    <div class="container">
+      <div class="reviews-grid" id="reviewsGrid">
+
+        <!-- AI 비즈니스 -->
+        <div class="review-card" data-category="ai-biz">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">AI 비즈니스</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            ChatGPT와 미리캔버스로 업무 효율이 3배 이상 향상됐어요. 실무에 바로 적용할 수 있어서 정말 유익했습니다. 무엇보다 강사님의 친절한 설명 덕분에 막연하게 느꼈던 AI가 이제는 손에 잡히는 도구가 됐어요.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">이</div>
+            <div>
+              <span class="review-author-name">이○○</span>
+              <span class="review-author-course">AI 비즈니스 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.03</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="ai-biz">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">AI 비즈니스</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            소상공인으로서 마케팅이 항상 고민이었는데, AI 비즈니스 과정에서 배운 것들로 블로그와 SNS 콘텐츠를 직접 만들고 있어요. 매출이 눈에 띄게 올랐습니다. 수강 전후가 확실히 달라졌어요.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">한</div>
+            <div>
+              <span class="review-author-name">한○○</span>
+              <span class="review-author-course">AI 비즈니스 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.04</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="ai-biz">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">AI 비즈니스</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            프리랜서로 일하는데 AI 툴 활용법을 배우고 나서 제안서 작성 시간이 절반으로 줄었어요. 특히 ChatGPT로 초안을 작성하고 다듬는 방법이 너무 실용적이었습니다. 강력 추천합니다!
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">강</div>
+            <div>
+              <span class="review-author-name">강○○</span>
+              <span class="review-author-course">AI 비즈니스 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.05</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="ai-biz">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">AI 비즈니스</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            직장을 다니면서도 주말 수업으로 틈틈이 배웠는데, 이렇게 쉽게 AI를 활용할 수 있을 줄 몰랐어요. 특히 제미나이와 ChatGPT 비교 활용법이 너무 좋았습니다. 회사에서도 팀원들에게 알려주고 있어요.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">윤</div>
+            <div>
+              <span class="review-author-name">윤○○</span>
+              <span class="review-author-course">AI 비즈니스 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.06</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="ai-biz">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">AI 비즈니스</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            중소기업 대표인데 직원 교육용으로 수강했어요. 강사님의 실무 중심 커리큘럼이 정말 훌륭했습니다. 우리 직원들이 AI 도구를 자연스럽게 쓰기 시작했고, 회사 전체 업무 효율이 올라갔어요.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">임</div>
+            <div>
+              <span class="review-author-name">임○○</span>
+              <span class="review-author-course">AI 비즈니스 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.07</span>
+          </div>
+        </div>
+
+        <!-- AI 스마트폰 -->
+        <div class="review-card" data-category="smartphone">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">AI 스마트폰</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            스마트폰으로 영상 편집까지 할 수 있게 될 줄 몰랐어요. 수업 후 유튜브 채널을 개설했는데 벌써 구독자가 500명이 넘었습니다! 처음엔 두려웠지만 이제는 저도 크리에이터가 됐어요.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">박</div>
+            <div>
+              <span class="review-author-name">박○○</span>
+              <span class="review-author-course">AI 스마트폰 활용 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.02</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="smartphone">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">AI 스마트폰</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            스마트폰을 쓰긴 했는데 항상 기본 기능만 썼어요. 수업 들으면서 AI 카메라 기능이랑 번역 앱 활용법을 배웠는데 해외여행할 때 정말 유용했어요. 강사님이 눈높이에 맞게 가르쳐주셔서 너무 좋았습니다.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">오</div>
+            <div>
+              <span class="review-author-name">오○○</span>
+              <span class="review-author-course">AI 스마트폰 활용 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.03</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="smartphone">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">AI 스마트폰</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            우리 엄마 모시고 같이 수강했는데, 두 세대가 함께 배우기 좋은 커리큘럼이었어요. 어머니도 이제 혼자서 영상통화하고 사진 편집하실 수 있게 됐어요. 강사님이 끝까지 포기하지 않고 도와주셔서 정말 감사합니다.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">서</div>
+            <div>
+              <span class="review-author-name">서○○</span>
+              <span class="review-author-course">AI 스마트폰 활용 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.04</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="smartphone">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">AI 스마트폰</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            평소에 앱 설치도 어려웠는데 이제는 AI 앱으로 레시피 검색하고 건강 관리도 해요. 수업이 실습 위주라서 따라가기 편했어요. 동네 주민센터에서 들었는데 이런 좋은 강의를 무료로 들을 수 있어서 감사했습니다.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">권</div>
+            <div>
+              <span class="review-author-name">권○○</span>
+              <span class="review-author-course">AI 스마트폰 활용 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.05</span>
+          </div>
+        </div>
+
+        <!-- 미리캔버스 -->
+        <div class="review-card" data-category="miricanvas">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">미리캔버스</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            미리캔버스 지도자 자격증을 취득한 후 문화센터에서 강의를 시작하게 됐어요. 제 인생의 새로운 전환점이 되었습니다. 자격증 준비부터 실전까지 체계적으로 가르쳐주신 덕분이에요.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">최</div>
+            <div>
+              <span class="review-author-name">최○○</span>
+              <span class="review-author-course">미리캔버스 지도자 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.01</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="miricanvas">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">미리캔버스</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            포토샵 없이도 이런 퀄리티의 디자인이 가능하다니 놀랐어요! 미리캔버스 지도자 과정 덕분에 학교 학부모회 소식지도 제가 직접 만들고 있어요. 주변에서 어떻게 만들었냐고 자꾸 물어봐요.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">장</div>
+            <div>
+              <span class="review-author-name">장○○</span>
+              <span class="review-author-course">미리캔버스 지도자 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.02</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="miricanvas">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">미리캔버스</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            카페를 운영하는데 메뉴판, 행사 포스터, SNS 게시물을 이제 전부 직접 만들어요. 디자인 업체에 맡기던 비용이 줄어들었고, 원하는 디자인을 빠르게 완성할 수 있어서 너무 좋아요.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">노</div>
+            <div>
+              <span class="review-author-name">노○○</span>
+              <span class="review-author-course">미리캔버스 지도자 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.03</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="miricanvas">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">미리캔버스</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            교사인데 수업 자료 만드는 데 정말 많이 쓰고 있어요. 학생들도 미리캔버스로 발표 자료 만드는 걸 너무 좋아해서, 학교에서도 교육을 진행하게 됐어요. 지도자 자격증이 든든한 기반이 됐습니다.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">유</div>
+            <div>
+              <span class="review-author-name">유○○</span>
+              <span class="review-author-course">미리캔버스 지도자 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.04</span>
+          </div>
+        </div>
+
+        <!-- 시니어 AI -->
+        <div class="review-card" data-category="senior">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">시니어 AI</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            처음엔 AI가 너무 어려웠는데, 선생님이 천천히 알려주셔서 이제 ChatGPT로 손자 생일카드도 만들어요. 정말 감사합니다! 배우길 너무 잘 했다 싶어요.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">김</div>
+            <div>
+              <span class="review-author-name">김○○</span>
+              <span class="review-author-course">시니어 AI 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.02</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="senior">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">시니어 AI</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            70이 넘어서 AI를 배우기 시작했는데, 이제는 제가 동네 어르신들에게 알려드려요. 배움에는 나이가 없다고 느꼈습니다. 강사님이 포기하지 않고 반복해서 가르쳐주셔서 정말 감사해요.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">정</div>
+            <div>
+              <span class="review-author-name">정○○</span>
+              <span class="review-author-course">시니어 AI 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.03</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="senior">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">시니어 AI</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            65세에 처음으로 AI를 접했는데 이렇게 재미있을 줄 몰랐어요. 혼자서 여행 계획도 짜고 레시피도 물어보고, 심심할 틈이 없어요. 덕분에 치매 예방도 되는 것 같아서 좋습니다 (웃음).
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">신</div>
+            <div>
+              <span class="review-author-name">신○○</span>
+              <span class="review-author-course">시니어 AI 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.04</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="senior">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">시니어 AI</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            노인복지관에서 수업을 들었는데 강사님이 너무 친절하고 이해하기 쉽게 가르쳐주셨어요. AI로 편지도 쓰고 가족에게 이야기도 만들어서 보내주니 애들이 정말 좋아해요. 다음 과정도 꼭 듣고 싶어요.
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">홍</div>
+            <div>
+              <span class="review-author-name">홍○○</span>
+              <span class="review-author-course">시니어 AI 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.05</span>
+          </div>
+        </div>
+
+        <div class="review-card" data-category="senior">
+          <div class="review-card-top">
+            <div class="review-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="review-category">시니어 AI</span>
+          </div>
+          <i class="fas fa-quote-right review-quote-icon"></i>
+          <p class="review-body">
+            복지관 AI 교육을 통해 손녀와 이야기 주제가 생겼어요. "할머니도 AI 알아요?" 했던 손녀가 이제 저한테 물어봐요. 이 나이에 손녀보다 잘 안다고 뿌듯했습니다. 강사님 정말 고맙습니다!
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">문</div>
+            <div>
+              <span class="review-author-name">문○○</span>
+              <span class="review-author-course">시니어 AI 과정 수강생</span>
+            </div>
+            <span class="review-date">2025.06</span>
+          </div>
+        </div>
+
+        <!-- Empty state (hidden by default) -->
+        <div class="reviews-empty hidden" id="reviewsEmpty">
+          <i class="far fa-comment-dots"></i>
+          <p>해당 과정의 후기가 없습니다.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="reviews-cta-section">
+    <div class="container">
+      <h2>수강 신청 <span class="gradient-text-light">문의하기</span></h2>
+      <p>궁금한 점이 있으시면 편하게 연락 주세요</p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a href="/#contact" class="btn btn-glow">
+          <i class="fas fa-paper-plane"></i>
+          <span>교육 상담 문의</span>
+        </a>
+        <a href="/" class="btn btn-glass" style="color:var(--white); border-color:rgba(255,255,255,0.2);">
+          <i class="fas fa-home"></i>
+          <span>홈으로 돌아가기</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="/" class="footer-logo-link">
+            <img src="images/logo.png" alt="MFEPA 로고" class="footer-logo">
+            <span>MFEPA</span>
+          </a>
+          <p class="footer-tagline">모두잇미래교육진흥협회<br>AI 교육으로 포용적 디지털 사회를 만듭니다.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>바로가기</h4>
+            <ul>
+              <li><a href="/#about">협회소개</a></li>
+              <li><a href="/#programs">강의프로그램</a></li>
+              <li><a href="/#instructors">강사소개</a></li>
+              <li><a href="/#contact">문의하기</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>프로그램</h4>
+            <ul>
+              <li><a href="/#programs">AI 비즈니스 전문가</a></li>
+              <li><a href="/#programs">AI 스마트폰 전문가</a></li>
+              <li><a href="/#programs">미리캔버스 지도자</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>연락처</h4>
+            <ul>
+              <li><a href="tel:010-9376-8061">010-9376-8061</a></li>
+              <li><a href="mailto:anais0305@naver.com">anais0305@naver.com</a></li>
+              <li>평일 09:00 - 18:00</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 모두잇미래교육진흥협회 (MFEPA). All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop" aria-label="맨 위로">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <script src="script.js"></script>
+  <script>
+    // Filter functionality
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const reviewCards = document.querySelectorAll('.review-card[data-category]');
+    const emptyState = document.getElementById('reviewsEmpty');
+
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const filter = tab.dataset.filter;
+        let visibleCount = 0;
+
+        reviewCards.forEach(card => {
+          if (filter === 'all' || card.dataset.category === filter) {
+            card.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+
+        emptyState.classList.toggle('hidden', visibleCount > 0);
+      });
+    });
+  </script>
+</body>
+</html>
