@@ -791,6 +791,28 @@ ul { list-style: none; }
 }
 
 /* === TESTIMONIALS === */
+.testimonial-stats-bar {
+  display: flex; justify-content: center; align-items: stretch;
+  background: var(--purple-subtle); border-radius: var(--radius-lg);
+  border: 1px solid var(--purple-lighter); margin-bottom: 36px; overflow: hidden;
+}
+.testimonial-stat-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 20px 16px; position: relative;
+}
+.testimonial-stat-item + .testimonial-stat-item::before {
+  content: ''; position: absolute; left: 0; top: 20%; height: 60%;
+  width: 1px; background: var(--purple-lighter);
+}
+.testimonial-stat-num {
+  font-size: 1.5rem; font-weight: 800; line-height: 1.15;
+  background: var(--gradient-text);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.testimonial-stat-stars { display: flex; gap: 2px; justify-content: center; }
+.testimonial-stat-stars i { color: #FBBF24; font-size: 0.85rem; }
+.testimonial-stat-label { font-size: 0.72rem; color: var(--gray-500); margin-top: 3px; }
+
 .testimonials-masonry { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .testimonial-glass {
   padding: 28px; background: var(--white); border-radius: var(--radius-lg);
