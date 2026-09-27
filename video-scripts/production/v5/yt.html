@@ -169,7 +169,7 @@ function anim(s,i,l,D,sc){const v=s.vis,p='s'+i+'_';const L0=sc.lead||0.35;const
    const tgt=bs[k],prev=bs[Math.max(0,k-1)];const mv=eo(lin(l,cs[k]-0.6,cs[k]-0.1));const x=(prev.left+prev.width/2)+((tgt.left+tgt.width/2)-(prev.left+prev.width/2))*(k?mv:1);const y=tgt.top+tgt.height*0.55-120;
    const press=l>cs[k]-0.1&&l<cs[k]+0.2?12:0;const G=$(p+'g2').getBoundingClientRect();hd.style.left=(x-30-G.left)+'px';hd.style.top=(y+press+150-G.top)+'px';hd.style.opacity=Math.min(lin(l,a2+0.5,a2+0.9),1-lin(l,a3-0.4,a3));
    break;}
- case 'talk': rise(p+'t',l,0.35,0.6,40);break;
+ case 'talk': rise(p+'t',l,Math.max(0.1,L0-0.3),0.6,40);break; // 강사 사진과 같은 순간에 등장
  case 'link': rise(p+'t',l,0.15,0.5,40);rise(p+'s',l,Math.min(1.5,sp*0.35));break;
  }}
 
@@ -182,6 +182,8 @@ function render(t){
  let c='';for(const k of TL.caps){if(t>=k[0]&&t<k[1]){c=k[2];break;}}
  if(c!==lastCap){$('cap').textContent=c;lastCap=c;}$('cap').style.opacity=c?1:0;
  // 강사 이름표 (강사 영상은 ffmpeg 에서 x110 y250 600x600 위치에 합성)
+ // 강사 장면 글자는 장면 시작부터 제자리(강사 사진 오른쪽)에 — 사진이 나오기 전 왼쪽 끝에 있다가 튀던 문제 수정
+ if(SEG[cur].vis.t==='talk'){const pp=TL.pres.find(p=>p.si===cur);const w=$('s'+cur+'_w');if(pp&&w)w.style.left=(pp.px+440+64)+'px';}
  let on=null;for(const p of TL.pres){if(t>=p.start&&t<p.start+p.dur){on=p;break;}}
  const tag=$('presTag');if(on){tag.style.left=on.px+'px';const w=$('s'+on.si+'_w');if(w)w.style.left=(on.px+440+64)+'px';tag.style.display='block';tag.style.opacity=Math.min(eo(lin(t,on.start,on.start+0.35)),1-lin(t,on.start+on.dur-0.3,on.start+on.dur));}else tag.style.display='none';
 }

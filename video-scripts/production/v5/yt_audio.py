@@ -25,6 +25,7 @@ MIN_PAUSE = 0.13   # 이보다 짧은 무음은 ㄱ·ㄷ·ㅂ 같은 받침·파
 MARKS = {'03a': ['역할', '상황', '요청', '형식'], '09a': ['첫째', '둘째', '셋째', '넷째'],
          '10a': ['이번', '구독', '좋아요', '알림', '미래']}   # 말하는 순서대로
 _model = None
+NOISE = {}   # 지운 잡음 위치(장면별)
 
 
 def sh(cmd):
@@ -114,6 +115,22 @@ def edit_pauses(s):
     i = s['id']; get(s['audio'], f'n_{i}.wav')
     sh(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', f'n_{i}.wav', '-af', EQ, '-ar', '48000', '-ac', '1', f'e_{i}.wav'])
     D = dur(f'e_{i}.wav'); words = words_of(f'e_{i}.wav')
+    # 0) '음' 같은 짧은 잡음 덩어리 지우기: 앞뒤가 조용한 0.3초 미만 소리 중 인식된 단어와 겹치지 않는 것
+    ss = [(a, D if b is None else b) for a, b in silences(f'e_{i}.wav', '-38dB', 0.1)]
+    edges = [(0.0, 0.0)] + ss + [(D, D)]
+    w0 = words[0][0] if words else 0.0; w1 = words[-1][1] if words else D
+    mute = []
+    for (a0, b0), (a1, b1) in zip(edges, edges[1:]):
+        x, y = b0, a1                      # 소리 구간
+        if not (0 < y - x < 0.3): continue
+        ov = sum(max(0, min(y, wb) - max(x, wa)) for wa, wb, _ in words)
+        if y < w0 + 0.02 or x > w1 - 0.02 or ov / (y - x) < 0.4:
+            mute.append((max(0, x - 0.02), min(D, y + 0.02)))
+    if mute:
+        vf = ','.join(f"volume=0:enable='between(t,{a:.3f},{b:.3f})'" for a, b in mute)
+        sh(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', f'e_{i}.wav', '-af', vf, f'm_{i}.wav'])
+        os.replace(f'm_{i}.wav', f'e_{i}.wav')
+    NOISE[i] = [(round(a, 2), round(b - a, 2)) for a, b in mute]
     sil = [(a, D if b is None else b) for a, b in silences(f'e_{i}.wav', '-42dB', MIN_PAUSE)]
     keep, cur, kinds = [], 0.0, []
     if s['kind'] == 'talk':   # 강사 립싱크 문장: 입모양 영상과 시간이 같아야 하므로 자르지 않음
@@ -123,7 +140,8 @@ def edit_pauses(s):
         if b >= D - 0.05: keep.append((cur, min(D, a + 0.12), 1.0)); cur = None; break   # 끝 무음
         k = boundary_kind(s['text'], words, (a + b) / 2); T = PAUSE[k]; kinds.append((k, round(b - a, 2)))
         if b - a > T + 0.02:
-            keep.append((cur, a + T / 2, 1.0)); cur = b - T / 2
+            post = max(0.08, T / 2); pre = max(0.01, T - post)   # 다음 말 앞은 넉넉히 남겨 ㅁ·ㄴ·ㅎ 같은 약한 첫소리가 잘리지 않게
+            keep.append((cur, a + pre, 1.0)); cur = b - post
     if cur is not None: keep.append((cur, D, 1.0))
     cut(f'e_{i}.wav', f'p_{i}.wav', keep)
     raw = round(difflib.SequenceMatcher(None, norm(s['text']), norm(''.join(w for _, _, w in words))).ratio(), 3)
@@ -161,9 +179,13 @@ def timing(segs):
         for x, y, talk, syl in ph:
             f = 1.0
             if talk > 0.7 and syl >= 4 and s['kind'] != 'talk':
-                f = min(1.10, max(0.90, (target / (syl / talk)) ** 0.7))   # 느린 구절은 조금 빠르게, 빠른 구절은 조금 느리게
+                r = syl / talk
+                # v6c: 빨라지는 구절은 기준 빠르기까지 충분히 늦추고(최대 15%), 느린 구절은 아주 조금만(최대 3%) 당김
+                f = max(0.85, target / r) if r > target else min(1.03, (target / r) ** 0.5)
             keep.append((x, y, f)); tm.append((x, t_new, f)); t_new += (y - x) / f
         cut(f'p_{i}.wav', f'c_{i}.wav', keep)
+        st = sum(p[2] / k[2] for p, k in zip(ph, keep)); sy = sum(p[3] for p in ph)
+        qc[i]['rate_after'] = round(sy / st, 2) if st else 0; qc[i]['noise'] = NOISE.get(i, [])
         m = {}
         if i in MARKS:
             def conv(t):

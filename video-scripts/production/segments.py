@@ -152,3 +152,9 @@ for s in S:
     if s["id"] in V5: s["text"] = V5[s["id"]]
 json.dump(S, open("segments.json", "w"), ensure_ascii=False, indent=1)
 print("v5", len(S), "segments,", len(V5), "문장 수정")
+
+# ---- v6c: 기존 목소리 유지. 챗·에이전트 비교표(05d)에 여행 예시 설명 추가 (기존 목소리로 생성) ----
+for s in S:
+    if s["id"] == "05d":
+        s["text"] = "그래서 부탁하는 방법도 조금 달라요. 예를 들어 여행을 준비한다면 챗에게는 부산 1박 2일 여행 코스를 추천해 줘 하고 물어보면 돼요. 에이전트에게는 부산 숙소를 찾아서 가격순으로 표로 정리하고 예약하기 전에 나에게 먼저 물어봐 하고 일을 맡기는 거예요. 챗은 답을 보고 대화로 다듬으면 되고 에이전트에게는 처음부터 목표와 완성 모습을 꼼꼼하게 알려 주는 게 핵심이에요."
+json.dump(S, open("segments.json", "w"), ensure_ascii=False, indent=1)
