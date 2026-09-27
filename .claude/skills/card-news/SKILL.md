@@ -14,6 +14,7 @@ description: 인스타그램용 카드뉴스(캐러셀, 1080x1350 4:5)를 크림
 - 가운데: 큰 목업 판(visual) + 마스킹테이프·흩어진 점
 - 아래: Claude 픽셀 캐릭터 + 말풍선 + "밀어서 보기 →" 버튼, 맨 아래 진행 표시줄(캐릭터가 현재 장 위치로 이동, 끝에 깃발)
 - 손글씨(Nanum Pen Script)로 메모·도장·화살표를 넣어 사람 손맛을 낸다
+- 테마 2종: `paper`(기본, 크림 + 테라코타 + Claude 캐릭터) · `codex`(쿨그레이 + 청보라 + 코덱스 `>_` 캐릭터). Claude 활용 콘텐츠는 `paper`, 코덱스·ChatGPT 활용 콘텐츠는 `codex`를 쓴다. 같은 원고에 `"theme"`만 바꾸면 한 벌 더 나온다.
 - 폰트는 `assets/fonts`에 내장(Noto Sans KR·Nanum Pen Script·Nunito). 인터넷 없이도 같은 결과가 나온다.
 
 ## 1. 원문 파악
@@ -54,6 +55,7 @@ description: 인스타그램용 카드뉴스(캐러셀, 1080x1350 4:5)를 크림
 {
   "title": "게시물 제목",
   "brand": { "handle": "@modoit" },
+  "theme": "paper",
   "mascot": "claude",
   "swipe": "밀어서 보기",
   "colors": { "accent": "#C96F4A" },
@@ -72,7 +74,8 @@ description: 인스타그램용 카드뉴스(캐러셀, 1080x1350 4:5)를 크림
 }
 ```
 
-- `mascot`: `"claude"`(기본, Claude Code 픽셀 캐릭터) · `"none"` · 이미지 경로
+- `theme`: `"paper"`(기본) · `"codex"`
+- `mascot`: 테마 기본값을 따른다(paper → `"claude"`, codex → `"codex"`). `"none"`이나 이미지 경로로 바꿀 수 있다.
 - `colors`: `bg, paper, card, line, ink, sub, mute, accent, accentSoft, accentInk, mascot, tape`
 - 표지(1번 장)는 제목에 붓 밑줄이 자동으로 들어간다(`underline: false`로 끔).
 
@@ -114,4 +117,4 @@ PNG를 Read로 직접 열어 본다. 여러 장은 ffmpeg `tile`로 한 장에 �
 
 - PNG를 사용자에게 보낸다(SendUserFile). 인스타그램에는 01부터 순서대로 올린다.
 - **게시물 캡션**도 함께 준다: 첫 줄 훅 → 핵심 3줄 → 일정·신청 안내 → 해시태그 10~15개.
-- Claude 캐릭터는 Anthropic의 캐릭터다. AI 활용 교육 콘텐츠에는 자연스럽지만, 협회 대표 캐릭터처럼 쓰지 않도록 필요하면 `mascot`을 바꾼다.
+- Claude·코덱스 캐릭터는 각 회사(Anthropic, OpenAI)를 떠올리게 하는 캐릭터다. AI 활용 교육 콘텐츠에는 자연스럽지만, 협회 대표 캐릭터처럼 쓰지 않도록 필요하면 `mascot`을 바꾼다.

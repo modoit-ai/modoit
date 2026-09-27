@@ -29,6 +29,30 @@ const t = {
   ...(spec.colors || {}),
 };
 const brand = { handle: '@modoit', name: '모두잇미래교육진흥협회', ...(spec.brand || {}) };
+
+// ── 테마: 기본(paper, 테라코타) 색을 통째로 바꿔 끼우는 교체표 ──
+const THEMES = {
+  paper: { mascot: 'claude', swap: {} },
+  // 청보라 코덱스 테마
+  codex: {
+    mascot: 'codex',
+    swap: {
+      '#F3EEE6': '#EEF0F8', '#FAF7F2': '#F8F9FD', '#EDE6DB': '#E4E7F3', '#FBF8F2': '#FAFBFE', '#FFFDF9': '#FFFFFF',
+      '#FFFDF8': '#FFFFFF', '#FFFBF7': '#F9F9FF', '#E3DCD1': '#DCE0EE', '#26201B': '#1B1D33', '#6A625A': '#5A5F7A',
+      '#9A928A': '#8E93AB', '#8C857D': '#858AA3', '#C96F4A': '#5B5BEF', '#F4DDD1': '#E2E3FD', '#A4502F': '#3F3FC9',
+      '#D97757': '#6366F1', '#EFE8DE': '#E9EBF5', '#EEE7DC': '#E8EAF4', '#EDE6DA': '#E6E9F4', '#D8CFC2': '#C9CEE3',
+      '#5E574F': '#555A74', '#4E4740': '#464B66', '#F8E7DE': '#E9EAFE', '#F6F1E9': '#F2F3FA', '#F3D3C2': '#D9DBFC',
+      '#F1EBE2': '#ECEEF7', '#F1E7DC': '#E6E8F7', '#ECE5DA': '#E6E9F4', '#E9E3DA': '#E3E6F2', '#E7B49C': '#AEB0F7',
+      '#CFC7BC': '#C5CADF', '#C9C1B6': '#BEC3D8', '#B9B0A4': '#AEB3CC', '#8A4A30': '#34349E', '#6D655D': '#5D627C',
+      '#6A5043': '#3F4466', '#3E3731': '#33374F', '#8a857e': '#7f8499',
+      'rgba(232,186,166,.5)': 'rgba(170,176,245,.45)', 'rgba(201,111,74,': 'rgba(91,91,239,', 'rgba(120,90,60,': 'rgba(60,70,130,',
+      '0 0 0 0 .55 0 0 0 0 .5 0 0 0 0 .45': '0 0 0 0 .4 0 0 0 0 .45 0 0 0 0 .6',
+    },
+  },
+};
+const theme = THEMES[spec.theme || 'paper'] || (() => { throw new Error(`알 수 없는 theme: ${spec.theme} (가능: ${Object.keys(THEMES).join(', ')})`); })();
+const mascotName = spec.mascot || theme.mascot;
+const applyTheme = (str) => Object.entries(theme.swap).reduce((acc, [a, b]) => acc.split(a).join(b), str);
 const total = spec.slides.length;
 
 // ── 유틸 ─────────────────────────────────────────────
@@ -80,9 +104,23 @@ const icon = (name, size = 26) => ICON[name]
 // 터미널 시작 화면의 블록 문자 그림을 18x6 픽셀(세로 2배)로 변환
 const ART = [' ▐▛███▜▌ ', '▝▜█████▛▘', '  ▘▘ ▝▝  '];
 const QUAD = { ' ': [0, 0, 0, 0], '█': [1, 1, 1, 1], '▐': [0, 1, 0, 1], '▌': [1, 0, 1, 0], '▛': [1, 1, 1, 0], '▜': [1, 1, 0, 1], '▝': [0, 1, 0, 0], '▘': [1, 0, 0, 0] };
+// 코덱스 픽셀 캐릭터: 청보라 구름 + 흰색 >_ 프롬프트 (16x12)
+const CODEX = [
+  '.....LLLLL......', '...LLLMMMMLL....', '..LLMMMMMMMMM...', '.LMMMMMMMMMMMM..',
+  'LMMWWMMMMMMMMMD.', 'LMMMWWMMMMMMMMMD', 'LMMMMWWMMMMMMMMD', 'LMMMWWMMMMMMMMMD',
+  'LMMWWMMMWWWWWMMD', '.MMMMMMMMMMMMMD.', '..DMMMMMMMMMDD..', '...DDDDDDDDDD...'];
+const CODEX_C = { L: '#8B8DF9', M: '#6366F1', D: '#4B45D6', W: '#FFFFFF' };
 function mascot(w) {
-  if (spec.mascot === 'none') return '';
-  if (spec.mascot && spec.mascot !== 'claude') return `<img src="${imgSrc(spec.mascot)}" style="width:${w}px;height:auto">`;
+  if (mascotName === 'none') return '';
+  if (mascotName === 'codex') {
+    const u = w / 16;
+    let r = '';
+    CODEX.forEach((row, y) => [...row].forEach((c, x) => {
+      if (CODEX_C[c]) r += `<rect x="${x * u}" y="${y * u}" width="${u + 0.3}" height="${u + 0.3}" fill="${CODEX_C[c]}"/>`;
+    }));
+    return `<svg class="mascot" width="${w}" height="${u * 12}" shape-rendering="crispEdges">${r}</svg>`;
+  }
+  if (mascotName !== 'claude') return `<img src="${imgSrc(mascotName)}" style="width:${w}px;height:auto">`;
   const u = w / 18;
   let r = '';
   ART.forEach((line, row) => [...line].forEach((ch, col) => QUAD[ch].forEach((on, k) => {
@@ -398,7 +436,7 @@ footer{position:relative;height:120px;display:flex;align-items:center;gap:26px;f
 .icap{position:absolute;right:10px;bottom:-20px;transform:rotate(-4deg)}
 `;
 
-const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>${esc(spec.title || '카드뉴스')}</title><style>${css}</style></head><body>${spec.slides.map(slide).join('\n')}</body></html>`;
+const html = applyTheme(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>${esc(spec.title || '카드뉴스')}</title><style>${css}</style></head><body>${spec.slides.map(slide).join('\n')}</body></html>`);
 const htmlPath = path.join(outDir, 'index.html');
 fs.writeFileSync(htmlPath, html);
 
