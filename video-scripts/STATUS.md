@@ -25,7 +25,8 @@ v5에서 만든 보정만 적용:
 2. 조사 앞 쉼 삭제 · 문장 끝 0.42초/쉼표 0.28초/띄어쓰기 0.12초까지만
 3. 구절별 말 빠르기 균형(±10%)
 4. 강사 립싱크 문장 9개는 입모양이 어긋나지 않도록 보정 제외 → 기존 립싱크 영상 그대로 사용
-- 완성본 v6: https://d2ol7oe51mr4n9.cloudfront.net/user_2vaNPiaZNQkNSSDKQlPKZICOTLh/4c9e1ebd-9b85-44fa-9cb0-800858abe76c.mp4 (-11.0 LUFS, 피크 -3.2 dBFS)
+- 완성본 v6b (현재): https://d2ol7oe51mr4n9.cloudfront.net/user_2vaNPiaZNQkNSSDKQlPKZICOTLh/b4afb91d-cf1f-4383-8b86-bae88c50679d.mp4 — 배경음악 1.7배(BGM_GAIN=1.7), 모든 장면 사이 2초 공백에서 음악이 부드럽게 올라옴 (공백 구간 -41 → -33 dB)
+- v6 (배경음악 너무 작음): …4c9e1ebd…
 - 비교용 시험본: 새 목소리 5번(음색 보정) da3c7405…, 1번(보정 없음) 96eb1ff5…
 
 ## v5 수정 내용 (2026-09-27 보스 피드백)

@@ -282,10 +282,12 @@ def final(segs, silent_url, out, srt_path, bgm=None, pres_img=None, T=None):
         first_v = T['mix'][0][3]; last_end = T['mix'][-1][3] + T['mix'][-1][2] - T['mix'][-1][1]
         sc = T['scenes']; gaps = []
         for k in range(1, len(sc)):
-            if sc[k]['id'][:2] != sc[k - 1]['id'][:2]:
+            if True:   # v6: 모든 장면 사이 2초 공백에서 음악이 살짝 올라옴 (단락 전환만 올리면 음악이 거의 안 들림)
                 gaps.append((sc[k - 1]['start'] + sc[k - 1]['lead'] + sc[k - 1]['speech'] + 0.25, sc[k]['start'] + sc[k]['lead'] - 0.25))
-        g = '+'.join(f'between(t,{a:.2f},{b:.2f})' for a, b in gaps) or '0'
-        vol = f"if(lt(t,{first_v:.2f}),0.20,if(gt(t,{last_end + 0.3:.2f}),0.22,if({g},0.15,0.09)))"
+        # 공백 구간마다 0.3초에 걸쳐 부드럽게 올렸다 내림 (볼륨이 툭 튀지 않게)
+        g = '+'.join(f'max(0,min(1,min((t-{a:.2f})/0.3,({b:.2f}-t)/0.3)))' for a, b in gaps if b > a) or '0'
+        G = float(os.environ.get('BGM_GAIN', '1'))   # v6: 보스 피드백(배경음악이 안 들림) → 1.7배
+        vol = f"if(lt(t,{first_v:.2f}),{0.20 * G:.3f},if(gt(t,{last_end + 0.3:.2f}),{0.22 * G:.3f},{0.09 * G:.3f}+{0.06 * G:.3f}*({g})))"
         sh(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', 'voice.wav', '-i', bgm, '-filter_complex',
             f"[1:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo,atrim=0:{total},asetpts=PTS-STARTPTS,volume='{vol}':eval=frame,afade=t=in:d=0.8,afade=t=out:st={total - 2.5:.2f}:d=2.5[m];"
             f"[0:a][m]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.6:attack=2:release=60:level=disabled[o]", '-map', '[o]', '-ar', '48000', 'mix.wav'])
