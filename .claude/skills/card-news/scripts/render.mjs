@@ -104,23 +104,16 @@ const icon = (name, size = 26) => ICON[name]
 // 터미널 시작 화면의 블록 문자 그림을 18x6 픽셀(세로 2배)로 변환
 const ART = [' ▐▛███▜▌ ', '▝▜█████▛▘', '  ▘▘ ▝▝  '];
 const QUAD = { ' ': [0, 0, 0, 0], '█': [1, 1, 1, 1], '▐': [0, 1, 0, 1], '▌': [1, 0, 1, 0], '▛': [1, 1, 1, 0], '▜': [1, 1, 0, 1], '▝': [0, 1, 0, 0], '▘': [1, 0, 0, 0] };
-// 코덱스 픽셀 캐릭터: 청보라 구름 + 흰색 >_ 프롬프트 (16x12)
-const CODEX = [
-  '.....LLLLL......', '...LLLMMMMLL....', '..LLMMMMMMMMM...', '.LMMMMMMMMMMMM..',
-  'LMMWWMMMMMMMMMD.', 'LMMMWWMMMMMMMMMD', 'LMMMMWWMMMMMMMMD', 'LMMMWWMMMMMMMMMD',
-  'LMMWWMMMWWWWWMMD', '.MMMMMMMMMMMMMD.', '..DMMMMMMMMMDD..', '...DDDDDDDDDD...'];
-const CODEX_C = { L: '#8B8DF9', M: '#6366F1', D: '#4B45D6', W: '#FFFFFF' };
+// 코덱스 캐릭터: assets/mascots/codex.png (사용자 제공 이미지, 배경 투명 처리)
+const MASCOT_DIR = path.resolve(HERE, '../assets/mascots');
 function mascot(w) {
   if (mascotName === 'none') return '';
-  if (mascotName === 'codex') {
-    const u = w / 16;
-    let r = '';
-    CODEX.forEach((row, y) => [...row].forEach((c, x) => {
-      if (CODEX_C[c]) r += `<rect x="${x * u}" y="${y * u}" width="${u + 0.3}" height="${u + 0.3}" fill="${CODEX_C[c]}"/>`;
-    }));
-    return `<svg class="mascot" width="${w}" height="${u * 12}" shape-rendering="crispEdges">${r}</svg>`;
+  if (mascotName !== 'claude') {
+    const file = fs.existsSync(path.join(MASCOT_DIR, `${mascotName}.png`))
+      ? `data:image/png;base64,${fs.readFileSync(path.join(MASCOT_DIR, `${mascotName}.png`)).toString('base64')}`
+      : imgSrc(mascotName);
+    return `<img class="mascot" src="${file}" style="width:${w}px;height:auto;image-rendering:pixelated">`;
   }
-  if (mascotName !== 'claude') return `<img src="${imgSrc(mascotName)}" style="width:${w}px;height:auto">`;
   const u = w / 18;
   let r = '';
   ART.forEach((line, row) => [...line].forEach((ch, col) => QUAD[ch].forEach((on, k) => {
