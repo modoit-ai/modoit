@@ -120,3 +120,16 @@ S.insert(i + 1, dict(id="01e", kind="gfx", text="오늘 안내해 드리는 프�
                      vis={"t": "link", "title": "오늘 나오는 프롬프트,\n[[설명란 블로그 링크]]에서\n모두 보실 수 있어요", "sub": "영상 아래 설명란 → 블로그 링크"}))
 json.dump(S, open("segments.json", "w"), ensure_ascii=False, indent=1)
 print("v3", len(S), "segments")
+
+# ---- v4: 끝부분 재구성 — 댓글 요청 → 핵심 정리 → 수정쌤 마무리 → 공통 아웃트로(모든 영상 공용 모션그래픽) ----
+by = {s["id"]: s for s in S}
+recap = by["09a"]
+recap["text"] = "마지막으로 오늘의 핵심을 한 번 더 짚어 드릴게요. 첫째 AI가 엉뚱한 답을 하는 건 짐작했기 때문이에요. 그러니 역할과 상황과 요청과 형식을 알려 주세요. 둘째 챗에서는 구체적으로 묻고 에이전트에게는 지시서처럼 맡기세요. 셋째 부탁하는 법이 막막할 땐 AI에게 물어보세요. 넷째 저장한 프롬프트는 가끔 유통기한을 확인하세요."
+recap["vis"] = {"t": "list", "title": "오늘의 [[핵심 4가지]]", "items": ["① 역할 · 상황 · 요청 · 형식을 알려 주기", "② 챗은 구체적으로 · 에이전트는 지시서처럼", "③ 막막할 땐 AI에게 물어보기", "④ 저장한 프롬프트는 유통기한 점검"]}
+outro = dict(id="10a", kind="gfx",
+             text="직접 사용해 보고 싶으시다면 영상 설명란의 링크를 확인해 주세요. 이번 영상도 도움이 되셨다면 구독과 좋아요 그리고 알림 설정 부탁드립니다. 미래 교육은 모두잇 수정쌤과 함께 해 주세요. 감사합니다.",
+             vis={"t": "outro"})
+head = [s for s in S if not s["id"].startswith("09")]
+S = head + [by["09c"], by["09d"], recap, by["09b"], outro]
+json.dump(S, open("segments.json", "w"), ensure_ascii=False, indent=1)
+print("v4", len(S), [s["id"] for s in S[-6:]])
