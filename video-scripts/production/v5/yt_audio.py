@@ -116,6 +116,8 @@ def edit_pauses(s):
     D = dur(f'e_{i}.wav'); words = words_of(f'e_{i}.wav')
     sil = [(a, D if b is None else b) for a, b in silences(f'e_{i}.wav', '-42dB', MIN_PAUSE)]
     keep, cur, kinds = [], 0.0, []
+    if s['kind'] == 'talk':   # 강사 립싱크 문장: 입모양 영상과 시간이 같아야 하므로 자르지 않음
+        sil = []
     for a, b in sil:
         if a < 0.05: cur = max(0.0, b - 0.06); continue          # 앞 무음
         if b >= D - 0.05: keep.append((cur, min(D, a + 0.12), 1.0)); cur = None; break   # 끝 무음
@@ -158,7 +160,7 @@ def timing(segs):
         t_new = 0.0
         for x, y, talk, syl in ph:
             f = 1.0
-            if talk > 0.7 and syl >= 4:
+            if talk > 0.7 and syl >= 4 and s['kind'] != 'talk':
                 f = min(1.10, max(0.90, (target / (syl / talk)) ** 0.7))   # 느린 구절은 조금 빠르게, 빠른 구절은 조금 느리게
             keep.append((x, y, f)); tm.append((x, t_new, f)); t_new += (y - x) / f
         cut(f'p_{i}.wav', f'c_{i}.wav', keep)
