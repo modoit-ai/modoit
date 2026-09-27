@@ -152,7 +152,7 @@ def timing(segs):
     for s in segs:
         PH[s['id']] = phrases(s['id'])
     rates = sorted(p[3] / p[2] for ph, _ in PH.values() for p in ph if p[2] > 0.7 and p[3] >= 4)
-    target = rates[len(rates) // 2]
+    target = float(os.environ.get('TARGET_RATE') or rates[len(rates) // 2])   # 일부 장면만 만들 때는 전체 기준값(5.64)을 넘겨 같은 빠르기로
     for s in segs:
         i = s['id']; ph, words = PH[i]; keep = []; tm = []   # tm: (원래 시작, 새 시작, 배율) — 표시 시각 변환용
         t_new = 0.0
