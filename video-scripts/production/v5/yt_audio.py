@@ -19,7 +19,7 @@ from concurrent.futures import ThreadPoolExecutor
 W = os.path.expanduser('~/yt'); os.makedirs(W, exist_ok=True); os.chdir(W)
 LEAD, TAIL, LAST_HOLD = 0.8, 1.2, 3.0   # 장면 전환 공백 = TAIL + 다음 LEAD = 2.0초 (모든 장면 동일)
 FIRST_LEAD = 0.35
-EQ = 'highpass=f=90,equalizer=f=3200:t=o:w=1.2:g=3.5,treble=g=2.5:f=8000'
+EQ = 'anull' if os.environ.get('NO_EQ') else 'highpass=f=90,equalizer=f=3200:t=o:w=1.2:g=3.5,treble=g=2.5:f=8000'   # NO_EQ=1 이면 음색 보정 없이(비교 1번)
 PAUSE = {'sent': 0.42, 'comma': 0.28, 'space': 0.12, 'inword': 0.06}
 MIN_PAUSE = 0.13   # 이보다 짧은 무음은 ㄱ·ㄷ·ㅂ 같은 받침·파열음의 자연스러운 멈춤이라 건드리지 않음
 MARKS = {'03a': ['역할', '상황', '요청', '형식'], '09a': ['첫째', '둘째', '셋째', '넷째'],
