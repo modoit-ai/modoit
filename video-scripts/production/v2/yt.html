@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Prompt Guide</title>
+<!-- 모두잇 홍보영상 스킬(youtube_explainer_16x9) 디자인 토큰·모션 규칙을 따른 장면 템플릿. 장면 내용은 segments.json, 시간은 timing.js -->
+<style>
+:root{--bg:#1b1426;--panel:#241a36;--purple:#6b3db8;--purple2:#8e62de;--lime:#b7f75b;--muted:#b8aecb;--ink:#1d1d1f;--red:#ff5a5f}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);font-family:Pretendard,'Noto Color Emoji',sans-serif;color:#fff;-webkit-font-smoothing:antialiased;word-break:keep-all}
+#bgGlow{position:absolute;inset:0;background:radial-gradient(circle at 70% 35%,rgba(142,98,222,.22),rgba(142,98,222,0) 55%),radial-gradient(circle at 10% 90%,rgba(183,247,91,.06),rgba(183,247,91,0) 40%)}
+#head{position:absolute;left:80px;top:48px;right:80px;height:60px;display:flex;align-items:center;justify-content:space-between}
+#brand{display:flex;align-items:center;gap:14px;font-size:26px;font-weight:700;color:var(--lime)}
+#brand i{width:12px;height:12px;border-radius:50%;background:var(--lime);display:block}
+#chap{font-size:26px;font-weight:700;color:var(--muted)}
+#dots{display:flex;gap:10px}
+#dots b{width:44px;height:8px;border-radius:4px;background:rgba(255,255,255,.15);display:block}
+#dots b.on{background:var(--lime)}
+.scene{position:absolute;left:0;top:120px;width:1920px;height:770px;display:none}
+.stage{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 120px}
+#cap{position:absolute;left:50%;bottom:54px;transform:translateX(-50%);width:max-content;white-space:nowrap;padding:20px 40px;border-radius:18px;background:rgba(10,6,18,.72);font-size:44px;line-height:1.35;font-weight:700;text-align:center;letter-spacing:-.8px}
+.h1{font-size:96px;font-weight:900;letter-spacing:-3.5px;line-height:1.14}
+.h1 em,.h2 em{font-style:normal;color:var(--lime)}
+.h2{font-size:62px;font-weight:900;letter-spacing:-2px;line-height:1.15;margin-bottom:44px}
+.pill{display:inline-flex;align-items:center;gap:12px;padding:16px 32px;border-radius:999px;font-size:36px;font-weight:800;white-space:nowrap}
+.pill.lime{background:var(--lime);color:#1b1426}
+.pill.dark{background:rgba(255,255,255,.1);color:#fff;border:2px solid rgba(255,255,255,.18)}
+.card{background:#fff;color:var(--ink);border-radius:26px;box-shadow:0 30px 70px rgba(0,0,0,.35);text-align:left}
+.row{display:flex;gap:48px;width:100%;justify-content:center;align-items:stretch}
+.cmpbox{flex:1;max-width:800px;padding:40px 46px}
+.cmpbox .tg{font-size:34px;font-weight:900;margin-bottom:20px}
+.cmpbox .q{font-size:40px;font-weight:800;line-height:1.45;background:#f1edf9;border-radius:18px;padding:22px 28px}
+.cmpbox .a{font-size:36px;font-weight:600;line-height:1.5;margin-top:24px;color:#4a4458}
+.bad{border:6px solid var(--red)}.bad .tg{color:#d93a3f}
+.good{border:6px solid var(--lime)}.good .tg{color:#3f8f00}
+.chk{display:flex;align-items:center;gap:26px;font-size:52px;font-weight:800;text-align:left;padding:14px 0}
+.chk .bx{width:70px;height:70px;border-radius:18px;border:5px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;flex:none}
+.chk .bx svg{opacity:0}
+.tile{width:340px;height:340px;border-radius:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 26px 60px rgba(0,0,0,.4)}
+.tile b{font-size:52px;font-weight:900;opacity:.8}.tile span{font-size:96px;font-weight:900;letter-spacing:-3px;margin-top:6px}
+.num{width:150px;height:150px;border-radius:50%;background:var(--lime);color:#1b1426;font-size:84px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-bottom:26px}
+.quote{margin-top:44px;padding:36px 60px;font-size:56px;font-weight:800;line-height:1.4;text-align:center}
+.bub{max-width:1150px;font-size:50px;font-weight:700;line-height:1.4;padding:30px 44px;border-radius:40px;text-align:left}
+.bu{align-self:flex-end;background:var(--purple);color:#fff;border-bottom-right-radius:10px}
+.ba{align-self:flex-start;background:#fff;color:var(--ink);border-bottom-left-radius:10px}
+.prompt{width:1500px;padding:46px 60px;font-size:48px;font-weight:700;line-height:1.6;border-top:16px solid var(--purple);min-height:420px}
+.prompt .cur{display:inline-block;width:5px;height:52px;background:var(--purple);vertical-align:-8px;margin-left:4px}
+.fl{width:400px;height:170px;border-radius:28px;background:rgba(255,255,255,.07);border:3px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;gap:20px;font-size:56px;font-weight:900}
+.fl.on{background:#fff;color:var(--ink);border-color:#fff}
+.arr{font-size:70px;font-weight:900;color:var(--lime)}
+table{border-collapse:separate;border-spacing:0;width:1640px;font-size:36px;background:#fff;color:var(--ink);border-radius:26px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+td,th{padding:18px 30px;text-align:left;border-bottom:1px solid #eee;line-height:1.35}
+th{font-size:44px;background:var(--purple);color:#fff}
+td:first-child{font-weight:900;color:var(--purple);width:280px}
+.job{font-size:54px;font-weight:900;margin-bottom:36px}
+.jobrow .bad{flex:0 0 520px}.jobrow .good{flex:0 0 1180px;max-width:none}
+.jobrow .good .q{font-size:36px;line-height:1.6;background:#f3ffe6;min-height:300px}
+.vsbox{flex:1;max-width:760px;padding:56px 40px;text-align:center;border-radius:36px;background:rgba(255,255,255,.07);border:3px solid rgba(255,255,255,.18)}
+.vsbox .big{font-size:110px;font-weight:900;letter-spacing:-3px}.vsbox .sm{font-size:44px;font-weight:700;color:var(--muted);margin-top:18px}
+.talkR{position:absolute;left:800px;right:100px;top:130px;height:600px;display:flex;flex-direction:column;justify-content:center}
+.talkR .h1{font-size:92px}
+#presTag{position:absolute;left:110px;top:870px;padding:12px 24px;border-radius:12px;background:#1b1426;border:2px solid rgba(255,255,255,.2);font-size:26px;font-weight:800;white-space:nowrap;display:none}
+.endcard{width:1300px;padding:60px 70px;text-align:center}
+</style>
+</head>
+<body>
+<div id="bgGlow"></div>
+<div id="head"><div id="brand"><i></i>모두잇 · AI 교실</div><div id="chap"></div><div id="dots"></div></div>
+<div id="scenes"></div>
+<div id="presTag">박옥경 · 모두잇 수정쌤</div>
+<div id="cap"></div>
+<script src="segments.js"></script>
+<script src="timing.js"></script>
+<script>
+const SEG=window.SEGMENTS, TL=window.TL_DATA;
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lin=(t,a,b)=>clamp((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const back=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+function set(e,o){e=typeof e==='string'?$(e):e;if(!e)return;for(const k in o){if(k==='o')e.style.opacity=o[k];else if(k==='tf')e.style.transform=o[k];else e.style[k]=o[k];}}
+function rise(id,l,a,d=0.45,dy=34){const x=eo(lin(l,a,a+d));set(id,{o:x,tf:`translateY(${(1-x)*dy}px)`});}
+function slide(id,l,a,d=0.4,dx=-40){const x=eo(lin(l,a,a+d));set(id,{o:x,tf:`translateX(${(1-x)*dx}px)`});}
+function pop(id,l,a,d=0.4){const x=back(lin(l,a,a+d));set(id,{o:clamp(lin(l,a,a+0.08)),tf:`scale(${x})`});}
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');
+const em=s=>esc(s).replace(/\[\[(.+?)\]\]/g,'<em>$1</em>');
+const CHK='<div class="bx"><svg width="40" height="40" viewBox="0 0 34 34"><path d="M5 18 L14 26 L29 8" stroke="#b7f75b" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+const CHAPS={'01':'인트로','02':'AI는 왜 못 알아들을까','03':'4가지 재료','04':'내 직업이라면?','05':'챗 vs 에이전트','06':'이제 외우지 마세요','07':'프롬프트의 유통기한','08':'꼭 기억할 3가지','09':'정리'};
+const CHK3=[['한 번에 완벽할 필요 없어요','대화로 다듬으면 돼요'],['AI도 틀릴 수 있어요','병원 · 돈 · 법은 한 번 더 확인'],['개인정보는 넣지 마세요','주민번호 · 통장 비밀번호 · 가족 연락처']];
+const TILE=[['#6b3db8','#fff'],['#8e62de','#fff'],['#b7f75b','#1b1426'],['#fff','#1b1426']];
+$('dots').innerHTML=Array.from({length:8},()=>'<b></b>').join('');
+
+// ---------- scene HTML ----------
+function html(s,i){const v=s.vis,p='s'+i+'_';let h='';
+ switch(v.t){
+ case 'title': h=`<div class="stage"><div class="h1" id="${p}t">${em(v.title)}</div>${v.sub?`<div style="margin-top:40px"><div class="pill lime" id="${p}s">${esc(v.sub)}</div></div>`:''}</div>`;break;
+ case 'split': h=`<div class="stage"><div class="h2" id="${p}t">${em(v.title)}</div><div class="row">
+   <div class="card cmpbox bad" id="${p}L"><div class="tg">❌ 이렇게 부탁하면</div><div class="q">${esc(v.L[0])}</div><div class="a">${esc(v.L[1])}</div></div>
+   <div class="card cmpbox good" id="${p}R"><div class="tg">⭕ 한 문장 더하면</div><div class="q">${esc(v.R[0])}</div><div class="a">${esc(v.R[1])}</div></div></div></div>`;break;
+ case 'list': h=`<div class="stage"><div class="h2" id="${p}t">${em(v.title)}</div><div style="display:flex;flex-direction:column;align-items:flex-start">${v.items.map((x,k)=>`<div class="chk" id="${p}i${k}">${CHK}${esc(x)}</div>`).join('')}</div></div>`;break;
+ case 'four': h=`<div class="stage"><div class="h2" id="${p}t">${em(v.title)}</div><div class="row" style="gap:40px">${['역할','상황','요청','형식'].map((x,k)=>`<div class="tile" id="${p}i${k}" style="background:${TILE[k][0]};color:${TILE[k][1]}"><b>${'①②③④'[k]}</b><span>${x}</span></div>`).join('')}</div></div>`;break;
+ case 'card': h=`<div class="stage"><div class="num" id="${p}n">${v.n}</div><div class="h1" id="${p}t">${em(v.title)}</div><div class="card quote" id="${p}q">${esc(v.ex)}</div></div>`;break;
+ case 'chat': h=`<div class="stage"><div class="h2" id="${p}t">${em(v.title)}</div><div style="display:flex;flex-direction:column;gap:30px;width:1400px">
+   <div class="bub bu" id="${p}u">${esc(v.user)}</div><div class="bub ba" id="${p}a">${esc(v.ai)}</div>${v.user2?`<div class="bub bu" id="${p}u2">${esc(v.user2)}</div>`:''}</div></div>`;break;
+ case 'prompt': h=`<div class="stage"><div class="h2" id="${p}t">✍️ ${em(v.title)}</div><div class="card prompt" id="${p}b"><span id="${p}tx"></span><span class="cur" id="${p}c"></span></div></div>`;break;
+ case 'steps': h=`<div class="stage"><div class="h2" id="${p}t">${em(v.title)}</div><div class="row" style="align-items:center;gap:30px">${v.items.map((x,k)=>`<div class="fl" id="${p}i${k}">${esc(x)}</div>`).join('<div class="arr">→</div>')}</div></div>`;break;
+ case 'table': h=`<div class="stage"><div class="h2" id="${p}t">부탁하는 방법이 <em>달라요</em></div><table id="${p}tb"><tr><th></th><th>💬 챗</th><th>🤖 에이전트</th></tr>${[
+   ['한마디로','물어보면 알려주는 상담 선생님','일을 맡기면 해내는 비서'],['결과','답변(글)','파일 · 표 · 검색 정리 · 예약'],['부탁 핵심','구체적인 질문 + 원하는 형식','목표 + 완성 모습 + 범위 + 확인 시점'],
+   ['잘 쓰는 법','주고받으며 다듬기','처음에 꼼꼼하게 지시하기'],['조심할 점','답이 틀릴 수 있으니 확인','결제·전송·삭제 전 "먼저 물어봐"']].map((r,k)=>`<tr id="${p}r${k}"><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</table></div>`;break;
+ case 'job': h=`<div class="stage"><div class="job pill dark" id="${p}j" style="font-size:48px">${esc(v.job)}</div><div class="row jobrow">
+   <div class="card cmpbox bad" id="${p}L"><div class="tg">❌ 잘못된 예시</div><div class="q">${esc(v.bad)}</div></div>
+   <div class="card cmpbox good" id="${p}R"><div class="tg">⭕ 잘된 예시</div><div class="q"><span id="${p}tx"></span></div></div></div></div>`;break;
+ case 'vs': h=`<div class="stage"><div class="h2" id="${p}t">${em(v.title)}</div><div class="row">
+   <div class="vsbox" id="${p}L"><div class="big">${esc(v.L[0])}</div><div class="sm">${esc(v.L[1])}</div></div>
+   <div class="vsbox" id="${p}R" style="border-color:var(--lime)"><div class="big">${esc(v.R[0])}</div><div class="sm">${esc(v.R[1])}</div></div></div></div>`;break;
+ case 'check': h=`<div class="stage"><div class="h2" id="${p}t">꼭 기억할 <em>3가지</em></div><div style="display:flex;flex-direction:column;align-items:flex-start;gap:14px">${CHK3.map((c,k)=>`<div class="chk" id="${p}i${k}" style="font-size:${k===v.k?64:46}px;opacity:${k===v.k?1:.35}">${CHK}<div>${c[0]}${k===v.k?`<div style="font-size:38px;font-weight:700;color:var(--muted);margin-top:8px">${c[1]}</div>`:''}</div></div>`).join('')}</div></div>`;break;
+ case 'end': h=`<div class="stage"><div class="h1" id="${p}t" style="font-size:100px">미래 교육은<br><em>모두잇</em>과 함께 해주세요</div>
+   <div style="margin-top:50px;display:flex;gap:24px" id="${p}s"><div class="pill lime">모두잇 클래스 → 프롬프트 모음</div><div class="pill dark">오늘 예시 바로 복사해서 써 보세요</div></div></div>`;break;
+ case 'talk': h=`<div class="talkR"><div class="h1" id="${p}t">${em(v.cap)}</div></div>`;break;
+ }
+ return `<div class="scene" id="c${i}">${h}</div>`;}
+$('scenes').innerHTML=SEG.map(html).join('');
+
+// ---------- per-scene animation (l: local time, D: scene duration) ----------
+function anim(s,i,l,D){const v=s.vis,p='s'+i+'_';const sp=D-1.2; // 말하는 구간
+ switch(v.t){
+ case 'title': rise(p+'t',l,0.15,0.5,40);pop(p+'s',l,Math.min(1.2,sp*0.35));break;
+ case 'split': rise(p+'t',l,0.1);slide(p+'L',l,0.35,0.45,-50);slide(p+'R',l,Math.min(1.2,sp*0.45),0.45,50);break;
+ case 'list': rise(p+'t',l,0.1);v.items.forEach((_,k)=>{const a=0.5+k*Math.max(0.6,sp/(v.items.length+0.5));slide(p+'i'+k,l,a);const e=$(p+'i'+k);e.querySelector('svg').style.opacity=lin(l,a+0.35,a+0.6);e.querySelector('.bx').style.borderColor=l>a+0.35?'#b7f75b':'rgba(255,255,255,.4)';});break;
+ case 'four': rise(p+'t',l,0.1);for(let k=0;k<4;k++){const a=Math.max(0.5,sp-4.2)+k*0.75;const b=eo(lin(l,0.6+k*0.15,1.0+k*0.15));const x=lin(l,a,a+0.35);set(p+'i'+k,{o:0.3*b+0.7*x,tf:`translateY(${(1-b)*30}px) scale(${1+0.08*Math.sin(Math.PI*x)})`});}break;
+ case 'card': pop(p+'n',l,0.1);rise(p+'t',l,0.3,0.5);rise(p+'q',l,Math.min(1.4,sp*0.3),0.5);break;
+ case 'chat': rise(p+'t',l,0.1);slide(p+'u',l,0.4,0.4,60);slide(p+'a',l,Math.min(2.5,sp*0.45),0.4,-60);if(v.user2)slide(p+'u2',l,sp*0.75,0.4,60);break;
+ case 'prompt':{rise(p+'t',l,0.1);rise(p+'b',l,0.3);const full=v.body;const n=Math.floor(full.length*lin(l,0.8,Math.max(1.5,sp-0.3)));$(p+'tx').innerHTML=esc(full.slice(0,n));$(p+'c').style.opacity=(n<full.length&&Math.floor(l*2.5)%2===0)||n===0?1:0;break;}
+ case 'steps': rise(p+'t',l,0.1);v.items.forEach((_,k)=>{const a=0.6+k*Math.max(0.8,sp/4);slide(p+'i'+k,l,a-0.3,0.3,-30);$(p+'i'+k).className='fl'+(l>a?' on':'');});break;
+ case 'table': rise(p+'t',l,0.1);rise(p+'tb',l,0.25,0.4,20);for(let k=0;k<5;k++)slide(p+'r'+k,l,0.5+k*0.3,0.35,30);break;
+ case 'job':{rise(p+'j',l,0.1);slide(p+'L',l,0.35,0.45,-50);slide(p+'R',l,Math.min(2.2,sp*0.35),0.45,50);const full=v.good;const a=Math.min(2.5,sp*0.38);const n=Math.floor(full.length*lin(l,a,Math.max(a+1,sp)));$(p+'tx').textContent=full.slice(0,n);break;}
+ case 'vs': rise(p+'t',l,0.1);pop(p+'L',l,Math.min(3,sp*0.55));pop(p+'R',l,Math.min(4.5,sp*0.75));break;
+ case 'check': rise(p+'t',l,0.1);for(let k=0;k<3;k++){const e=$(p+'i'+k);slide(e,l,0.3+k*0.15);if(k===v.k){e.style.opacity=Math.min(1,lin(l,0.3,0.7));e.querySelector('svg').style.opacity=lin(l,0.9,1.2);e.querySelector('.bx').style.borderColor=l>0.9?'#b7f75b':'rgba(255,255,255,.4)';}else{e.style.opacity=.35*Math.min(1,lin(l,0.3,0.7));e.querySelector('svg').style.opacity=k<v.k?1:0;}}break;
+ case 'end': rise(p+'t',l,0.2,0.6,40);rise(p+'s',l,Math.min(3,sp*0.4));break;
+ case 'talk': rise(p+'t',l,0.35,0.6,40);break;
+ }}
+
+let lastCap=null;
+function render(t){
+ const S=TL.scenes;let cur=0;for(let i=0;i<S.length;i++){if(t>=S[i].start)cur=i;}
+ for(let i=0;i<S.length;i++){const e=$('c'+i);if(i===cur){const l=t-S[i].start,D=S[i].dur;const a=Math.min(eo(lin(l,0,0.35)),i===S.length-1?1:1-lin(l,D-0.25,D));e.style.display='block';e.style.opacity=a;anim(SEG[i],i,l,D);}else e.style.display='none';}
+ const ch=SEG[cur].id.slice(0,2);$('chap').textContent=CHAPS[ch];
+ const n=+ch;[...$('dots').children].forEach((b,k)=>b.className=(n>=2&&k<=n-2)||n===9?'on':'');
+ let c='';for(const k of TL.caps){if(t>=k[0]&&t<k[1]){c=k[2];break;}}
+ if(c!==lastCap){$('cap').textContent=c;lastCap=c;}$('cap').style.opacity=c?1:0;
+ // 강사 이름표 (강사 영상은 ffmpeg 에서 x110 y250 600x600 위치에 합성)
+ let on=null;for(const p of TL.pres){if(t>=p.start&&t<p.start+p.dur){on=p;break;}}
+ const tag=$('presTag');if(on){tag.style.display='block';tag.style.opacity=Math.min(eo(lin(t,on.start,on.start+0.35)),1-lin(t,on.start+on.dur-0.3,on.start+on.dur));}else tag.style.display='none';
+}
+window.render=render;
+</script>
+</body>
+</html>
