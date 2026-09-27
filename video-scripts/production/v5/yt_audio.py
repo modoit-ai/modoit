@@ -288,7 +288,24 @@ def srt(caps, path):
 
 def final(segs, silent_url, out, srt_path, bgm=None, pres_img=None, T=None):
     T = T or timing(segs)
+    if os.environ.get('PREVIEW_SEC'):   # 앞부분 미리보기만 빠르게
+        P = float(os.environ['PREVIEW_SEC'])
+        T = dict(T, total=P, mix=[m for m in T['mix'] if m[3] < P - 1], pres=[p for p in T['pres'] if p['start'] < P - 1],
+                 scenes=[sc for sc in T['scenes'] if sc['start'] < P])
     total = T['total']
+    if bgm and os.environ.get('BGM_LOOP'):
+        # 곡이 영상보다 짧으면 이어 붙이기: 처음엔 [0,end], 이후엔 [restart,end]를 4초 겹쳐서 반복 (예: BGM_LOOP=160,34)
+        end, rs = map(float, os.environ['BGM_LOOP'].split(','))
+        n = 1 + max(0, int((total - end) // (end - rs - 4)) + 1)
+        ins = ['-i', bgm] * n
+        fcl = '[0:a]atrim=0:%.2f,asetpts=PTS-STARTPTS[l0];' % end
+        for k in range(1, n):
+            fcl += f'[{k}:a]atrim={rs:.2f}:{end:.2f},asetpts=PTS-STARTPTS[s{k}];'
+        prev = 'l0'
+        for k in range(1, n):
+            fcl += f'[{prev}][s{k}]acrossfade=d=4:c1=tri:c2=tri[l{k}];'; prev = f'l{k}'
+        sh(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y'] + ins + ['-filter_complex', fcl.rstrip(';'), '-map', f'[{prev}]', '-ar', '48000', '-ac', '2', 'bgm_loop.wav'])
+        bgm = 'bgm_loop.wav'
     get(silent_url, 'silent.mp4')
     # 1) 내레이션 믹스: 문장별 음량 맞춤 → 압축 → loudnorm -10 LUFS → limiter(level=disabled)
     ins, fc, mixin = [], '', ''
