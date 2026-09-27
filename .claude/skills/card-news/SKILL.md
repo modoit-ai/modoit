@@ -14,7 +14,7 @@ description: 인스타그램용 카드뉴스(캐러셀, 1080x1350 4:5)를 크림
 - 가운데: 큰 목업 판(visual) + 마스킹테이프·흩어진 점
 - 아래: Claude 픽셀 캐릭터 + 말풍선 + "밀어서 보기 →" 버튼, 맨 아래 진행 표시줄(캐릭터가 현재 장 위치로 이동, 끝에 깃발)
 - 손글씨(Nanum Pen Script)로 메모·도장·화살표를 넣어 사람 손맛을 낸다
-- 테마 2종: `paper`(기본, 크림 + 테라코타 + Claude 캐릭터) · `codex`(쿨그레이 + 청보라 + 코덱스 `>_` 캐릭터). Claude 활용 콘텐츠는 `paper`, 코덱스·ChatGPT 활용 콘텐츠는 `codex`를 쓴다. 같은 원고에 `"theme"`만 바꾸면 한 벌 더 나온다.
+- 테마 2종: `paper`(기본, 크림 + 테라코타 + Claude 캐릭터) · `codex`(흰 배경 + 청보라 + 코덱스 `>_` 캐릭터). Claude 활용 콘텐츠는 `paper`, 코덱스·ChatGPT 활용 콘텐츠는 `codex`를 쓴다. 같은 원고에 `"theme"`만 바꾸면 한 벌 더 나온다.
 - 폰트는 `assets/fonts`에 내장(Noto Sans KR·Nanum Pen Script·Nunito). 인터넷 없이도 같은 결과가 나온다.
 
 ## 1. 원문 파악

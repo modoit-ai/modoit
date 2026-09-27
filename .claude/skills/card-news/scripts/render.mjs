@@ -33,11 +33,11 @@ const brand = { handle: '@modoit', name: '모두잇미래교육진흥협회', ..
 // ── 테마: 기본(paper, 테라코타) 색을 통째로 바꿔 끼우는 교체표 ──
 const THEMES = {
   paper: { mascot: 'claude', swap: {} },
-  // 청보라 코덱스 테마
+  // 코덱스 테마: 흰 배경 + 청보라
   codex: {
     mascot: 'codex',
     swap: {
-      '#F3EEE6': '#EEF0F8', '#FAF7F2': '#F8F9FD', '#EDE6DB': '#E4E7F3', '#FBF8F2': '#FAFBFE', '#FFFDF9': '#FFFFFF',
+      '#F3EEE6': '#FFFFFF', '#FAF7F2': '#FFFFFF', '#EDE6DB': '#FFFFFF', '#FBF8F2': '#F7F8FD', '#FFFDF9': '#FFFFFF',
       '#FFFDF8': '#FFFFFF', '#FFFBF7': '#F9F9FF', '#E3DCD1': '#DCE0EE', '#26201B': '#1B1D33', '#6A625A': '#5A5F7A',
       '#9A928A': '#8E93AB', '#8C857D': '#858AA3', '#C96F4A': '#5B5BEF', '#F4DDD1': '#E2E3FD', '#A4502F': '#3F3FC9',
       '#D97757': '#6366F1', '#EFE8DE': '#E9EBF5', '#EEE7DC': '#E8EAF4', '#EDE6DA': '#E6E9F4', '#D8CFC2': '#C9CEE3',
@@ -46,7 +46,7 @@ const THEMES = {
       '#CFC7BC': '#C5CADF', '#C9C1B6': '#BEC3D8', '#B9B0A4': '#AEB3CC', '#8A4A30': '#34349E', '#6D655D': '#5D627C',
       '#6A5043': '#3F4466', '#3E3731': '#33374F', '#8a857e': '#7f8499',
       'rgba(232,186,166,.5)': 'rgba(170,176,245,.45)', 'rgba(201,111,74,': 'rgba(91,91,239,', 'rgba(120,90,60,': 'rgba(60,70,130,',
-      '0 0 0 0 .55 0 0 0 0 .5 0 0 0 0 .45': '0 0 0 0 .4 0 0 0 0 .45 0 0 0 0 .6',
+      '0 0 0 0 .55 0 0 0 0 .5 0 0 0 0 .45 0 0 0 .18 0': '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0', // 흰 배경: 종이 질감 없음
     },
   },
 };
