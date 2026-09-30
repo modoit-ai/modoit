@@ -2,7 +2,9 @@
 
 약 20초짜리 모션그래픽 마무리 장면이에요. 영상 주제와 상관없이 그대로 붙여 쓰도록 만들었어요.
 
-- **완성본 (내레이션 + 배경음악 포함, 1920×1080, 21.9초, -12.1 LUFS · 피크 -3.8 dBFS)**: https://d2ol7oe51mr4n9.cloudfront.net/user_2vaNPiaZNQkNSSDKQlPKZICOTLh/f89afb1c-0be7-4831-8128-35df0b972daf.mp4
+- **완성본 v7 (2026-09-30, 20.5초, 1920×1080, 보스 기존 목소리 + 워크숍 곡 1.3배, -11 LUFS)**: https://d2ol7oe51mr4n9.cloudfront.net/user_2vaNPiaZNQkNSSDKQlPKZICOTLh/5e533492-152b-41ec-a477-e185c8938d2a.mp4
+  - 로컬 저장 예: `curl -L -o ~/Movies/유튜브/공통소재/모두잇_공통엔딩_v7.mp4 'https://d2ol7oe51mr4n9.cloudfront.net/user_2vaNPiaZNQkNSSDKQlPKZICOTLh/5e533492-152b-41ec-a477-e185c8938d2a.mp4'` (보스 맥의 유튜브 폴더 경로에 맞게)
+  - 이전 버전(합성 배경음악): https://d2ol7oe51mr4n9.cloudfront.net/user_2vaNPiaZNQkNSSDKQlPKZICOTLh/f89afb1c-0be7-4831-8128-35df0b972daf.mp4
 - 편집 프로그램에서는 이 mp4를 영상 맨 뒤에 그대로 이어 붙이면 돼요.
 
 ## 구성
