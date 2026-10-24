@@ -1,6 +1,0 @@
-interface:
-  display_name: "비비 SNS 글·카드뉴스"
-  short_description: "블로그를 인스타그램·스레드 글과 카드뉴스 PNG로 제작하고 게시를 검증합니다"
-  default_prompt: "$modooit-social-cardnews를 사용해 이 블로그를 인스타그램·스레드용 글과 카드뉴스로 만들어주세요."
-policy:
-  allow_implicit_invocation: true

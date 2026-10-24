@@ -1,9 +1,0 @@
-{
-  "name": "modooit-social-cardnews",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "description": "블로그를 Instagram·Threads 글과 카드뉴스 PNG로 제작하는 Codex 스킬",
-  "engines": { "node": ">=20" },
-  "dependencies": { "playwright": "1.62.1" }
-}
